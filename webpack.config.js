@@ -19,8 +19,7 @@ const config = {
     devtool: 'inline-source-map',
     devServer: {
         open: true,
-        static: './src',
-        host: 'localhost',
+        static: './src'
     },
     plugins: [
         new HtmlWebpackPlugin({

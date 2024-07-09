@@ -6,26 +6,46 @@ const createProject = (name) => {
       newProject.name = name;
       newProject.toDoList = [];
 
-      return newProject;
+      return projects.push(newProject);
+}
+
+const getProjectIndex = (projectName) => {
+      return projects.findIndex(project => project.name.toLowerCase() === projectName.toLowerCase());
 }
 
 const getProject = (projectName) => {
-      if(projectName){
-            return projects.find(project => project.name.toLowerCase() === projectName.toLowerCase())
+      let index = getProjectIndex(projectName);
+      if(index !== -1){
+            return projects[index];
+      }else{
+            return index;
       }
 }
 
-const editProject = (...newValues) => {
-      if(!task) {
-            return;
+const editProject = (project, ...newValues) => {
+      if(project == -1) {
+            return console.error('Project not found');  
+      }  
+      const keys = Object.keys(project);
+      for(let i = 0; i < keys.length - 1; i++){
+            project[keys[i]] = newValues[i] != undefined ? newValues[i] :  project[keys[i]];
       }
-      let i = 0;
-      Object.keys(task).forEach((keys) => {
-            task[keys] = newValues[i] != undefined ? newValues[i] : task[keys];
-            i++;
-      })
 }
 
-const addTaskToProject = (project, task) => {
-      project.toDoList.push(task);
+const deleteProject = (projectName) => {
+      projects.splice(getProjectIndex(projectName), 1);
 }
+
+//NOTE: Double Check on delete functions.
+
+const ProjectA = createProject('Project A');
+//console.log(projects);
+//console.log(getProject('Project A'));
+editProject(getProject('Project A'), undefined);
+deleteProject('asdf');
+console.log(projects);
+
+
+// const addTaskToProject = (project, task) => {
+//       project.toDoList.push(task);
+// }

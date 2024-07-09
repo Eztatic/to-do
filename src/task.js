@@ -19,7 +19,7 @@ const getTask = (project, taskName) => {
       if(index !== -1){
             return project.toDoList[index];
       }else{
-            return 'Task not found';
+            return index;
       }
 };
 

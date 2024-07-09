@@ -32,19 +32,19 @@ const getTask = (project, taskName) => {
       if(index !== -1){
             return project.toDoList[index];
       }else{
-            return 'Task not found';
+            return index;
       }
 };
 
 const editTask = (task, ...newValues) => {
-      if(!task) {
-            return;
-      }
+      if(task == -1) {
+            return console.error('Task not found');  
+      }  
       let i = 0;
       Object.keys(task).forEach((keys) => {
             task[keys] = newValues[i] != undefined ? newValues[i] : task[keys];
             i++;
-      })
+      });
 }
 
 const deleteTask = (project, taskName) => {
@@ -58,7 +58,7 @@ addTaskToProject(project1, toDoItem);
 addTaskToProject(project1, toDoItem1);
 
 //console.log(getTask(project1, 'Code'))
-//editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
+editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
 
 // deleteTask(project1, 'Code1');
 

@@ -10,28 +10,33 @@ const createNewTask = (title, description, dueDate, priority, status) => {
       return newTask;
 } 
 
+const getTaskIndex = (project, taskName) => {
+      return project.toDoList.findIndex(task => task.title.toLowerCase() === taskName.toLowerCase());
+}
+
 const getTask = (project, taskName) => {
-      if(taskName){
-            return project.toDoList.find(task => task.title.toLowerCase() === taskName.toLowerCase())
-      }else {
-            return;
+      let index = getTaskIndex(project, taskName);
+      if(index !== -1){
+            return project.toDoList[index];
+      }else{
+            return 'Task not found';
       }
 };
 
 const editTask = (task, ...newValues) => {
-      if(!task) {
-            return;
-      }
+      if(task == -1) {
+            return console.error('Task not found');  
+      }  
       let i = 0;
       Object.keys(task).forEach((keys) => {
             task[keys] = newValues[i] != undefined ? newValues[i] : task[keys];
             i++;
-      })
+      });
 }
 
 const deleteTask = (project, taskName) => {
-      const toDelete = project.toDoList.findIndex(obj => obj.title.toLowerCase() === taskName.toLowerCase());
-      project.toDoList.splice(toDelete, 1);
+      project.toDoList.splice(getTaskIndex(project, taskName), 1);
 }
+
 
 export {createNewTask, getTask, editTask, deleteTask}

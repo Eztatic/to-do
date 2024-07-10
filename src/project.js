@@ -14,7 +14,7 @@ const getProjectIndex = (projectName) => {
 }
 
 const getProject = (projectName) => {
-      let index = getProjectIndex(projectName);
+      const index = getProjectIndex(projectName);
       if(index !== -1){
             return projects[index];
       }else{
@@ -33,16 +33,18 @@ const editProject = (project, ...newValues) => {
 }
 
 const deleteProject = (projectName) => {
-      projects.splice(getProjectIndex(projectName), 1);
+      const index = getProjectIndex(projectName);
+      if(index !== -1) {
+            projects.splice(index, 1);
+      }
 }
 
-//NOTE: Double Check on delete functions.
-
 const ProjectA = createProject('Project A');
+const ProjectB = createProject('Project B');
 //console.log(projects);
 //console.log(getProject('Project A'));
 editProject(getProject('Project A'), undefined);
-deleteProject('asdf');
+deleteProject('Project B');
 console.log(projects);
 
 

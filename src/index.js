@@ -58,10 +58,10 @@ addTaskToProject(project1, toDoItem);
 addTaskToProject(project1, toDoItem1);
 
 //console.log(getTask(project1, 'Code'))
-editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
+//editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
 
-// deleteTask(project1, 'Code1');
+//deleteTask(project1, 'Code');
 
-//console.log(project1);
+console.log(project1);
 
 

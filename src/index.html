@@ -3,12 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link src="./style.css"></link>
+    <link rel="stylesheet" href="./style.css">
     <title>To Do App</title>
-    <script src="./project.js" defer async></script>
+    <script src="./index.js" defer async></script>
 </head>
 <body>
-    <h1>Hello world!</h1>
-    <h2>Tip: Check your console</h2>
+    <aside>
+        <div class="user-profile">
+            <img src="./icons/profile-user.png" alt="user-profile">
+            <p>Username</p>
+        </div> 
+        <div class="project">
+            <ul>
+                <li>Project x</li>
+            </ul>
+        </div>
+    </aside>
+    <main>
+        <h1>Tasks</h1>
+        <div class="task-container">
+            <div class="task-head">
+                <p class="task-name">TASK NAME</p>
+                <span class="date-container">
+                    <p>Due Date: </p>
+                    <p class="due-date">YYYY/MM/DD</p>
+                </span>
+            </div>
+            <div class="task-body">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, recusandae!</p>
+                <p>Important</p>
+                <p>Status</p>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

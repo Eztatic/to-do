@@ -1,3 +1,7 @@
+:root {
+      --red: 1px solid red;
+}
+
 @font-face {
       font-family: 'poppins-regular';
       src: url('./fonts/poppins-regular-webfont.woff2') format('woff2'),
@@ -12,9 +16,56 @@
       padding: 0;
       list-style-type: none;
       list-style: none;
+      font-family: 'poppins-regular', system-ui, sans-serif;
 }
 
-body{
-      
+body {
+      display: grid;
+      grid-template: 1fr / minmax(150px, 250px) 1fr;
 }
 
+img {
+      width: 36px;
+      height: 36px;
+}
+
+.user-profile {
+      padding: 28px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+}
+
+.user-profile > p {
+      font-size: 1.2rem;
+}
+
+.project-label {
+      font-size: 1.5rem;
+      font-weight: 800;
+      padding: 12px 0;
+}
+
+.projects-container li {
+      font-size: 1.1rem;
+      padding: 0.6rem 0;
+}
+
+.projects-container > #new-project{
+      padding: 16px 100px;
+}
+
+aside { 
+      background-color: #FF8A08;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+}
+
+main { 
+      background-color: #393E46;
+      color: #fff;
+}

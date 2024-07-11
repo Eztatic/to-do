@@ -13,10 +13,12 @@
             <img src="./icons/profile-user.png" alt="user-profile">
             <p>Username</p>
         </div> 
-        <div class="project">
+        <div class="projects-container">
+            <p class="project-label">Projects</p>
             <ul>
                 <li>Project x</li>
             </ul>
+            <button id="new-project">Add</button>
         </div>
     </aside>
     <main>
@@ -24,15 +26,17 @@
         <div class="task-container">
             <div class="task-head">
                 <p class="task-name">TASK NAME</p>
-                <span class="date-container">
+                <div class="date-container">
                     <p>Due Date: </p>
                     <p class="due-date">YYYY/MM/DD</p>
-                </span>
+                </div>
             </div>
             <div class="task-body">
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, recusandae!</p>
                 <p>Important</p>
-                <p>Status</p>
+                <div>
+                    <p>Status</p><p>In progress</p>
+                </div>
             </div>
         </div>
     </main>

@@ -56,20 +56,21 @@ img {
       padding: 0.6rem 0;
 }
 
-.projects-container > #new-project{
-      width: 100%;
+.projects-container > button#new-project{
       background: none;
       text-align: center;
       font-size: 2rem;
+      width: 100%;
       padding: 4px 0;
       border: 0;
       border-radius: 4px;
+      margin-top: 8px;
       outline: 2px solid #393E46;
       display: inline-block;
       cursor: pointer;
 }
 
-#new-project:hover {
+button#new-project:hover {
       background: #393E46;
       color: #FF8A08;
       outline: 0px solid #FF8A08;
@@ -95,10 +96,21 @@ main {
       gap: 24px;
 }
 
+main > h1#project-x {
+      color: #000;
+      background-color: #FF8A08;
+      width: 100%;
+      padding: 1.2rem 0;
+      border-radius: 4px;
+      display: block;
+      position: sticky;
+      top: 0;
+}
+
 /** TASK **/
 
-div.task-container {
-      width: 1200px;
+div.task-container { 
+      width: max(300px, 80%);
 }
 
 /** A. Task Head **/
@@ -107,6 +119,7 @@ main .task-container .task-head{
       background-color: #E72929;
       padding: 16px 24px;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       border-top-left-radius: 25px;
@@ -122,17 +135,17 @@ main .task-container .task-head{
       display: inline;
 }
 
-/* .task-container::after {
+.task-container::after {
       content: "▼";
       display: block;
-      padding: 4px;
-      font-size: 24px;
+      padding: 4px 0 8px 0;
+      font-size: 16px;
       background-color: #8b8b8b;
-      height: 30px;
+      height: 18px;
       border-bottom-left-radius: 25px;
       border-bottom-right-radius: 25px;
       cursor: pointer;
-} */
+}
 
 
 /** B. Task Body **/
@@ -140,14 +153,34 @@ main .task-container .task-head{
       padding: 24px;
       background-color: #fff;
       color: #000;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
-      display: grid;
+      display: none;
       grid-template-columns: 4fr 200px;
       grid-template-rows: 50px 1fr 50px;
 }
 
-.desription {
+.task-body > p:first-child {
+      text-align: start;
+      font-size: 2rem;
+      font-weight: 900;
+}
+
+.task-body > p:nth-child(2) {
+      color: #ff0000;
+      font-weight: 600;
+      padding-top: 8px
+}
+
+.description {
+      text-align: start;
+      line-height: 18px;
       grid-column: 1 / 3;
+}
+.task-body > div {
+      grid-column: 2 / 3;
+      align-self: center;
+}
+
+.task-body > div > * {
+      display: inline-block;
 }
 

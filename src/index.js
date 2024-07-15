@@ -62,4 +62,29 @@ editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
 //deleteTask(project1, 'Code');
 //console.log(project1);
 
+const taskContainer = document.querySelectorAll('.task-container');
 
+
+taskContainer.forEach((element) => {
+      element.setAttribute("data-after", "▼");
+      element.addEventListener('click', (e) => {
+            const taskBody = e.target.closest('.task-container').querySelector('.task-body');
+            
+            if (taskBody) {
+                const computedStyle = window.getComputedStyle(taskBody);
+                const currentDisplay = computedStyle.getPropertyValue('display');
+                
+                if (currentDisplay === "none") {
+                    taskBody.style.display = "grid";
+                } else {
+                    taskBody.style.display = "none";
+                }
+                
+                element.setAttribute("data-after", taskBody.style.display === "grid" ? "▲" : "▼");
+            } else {
+                console.error('No element with the class "task-body" was found within the target element.');
+            }
+        });
+})
+
+//Optimize Code

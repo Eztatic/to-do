@@ -47,44 +47,46 @@ const editTask = (task, ...newValues) => {
       });
 }
 
-const deleteTask = (project, taskName) => {
-      project.toDoList.splice(getTaskIndex(project, taskName), 1);
-}
+// const deleteTask = (project, taskName) => {
+//       project.toDoList.splice(getTaskIndex(project, taskName), 1);
+// }
 
-const toDoItem = createNewTask('Code', 'Make ToDo App', 'YYYY/MM/DD', 'Low', 'on hold');
-const toDoItem1 = createNewTask('Code1', 'Make ToDo App1', 'YYYY/MM/DD', 'Mid', 'in progress');
-const project1 = generateProject('Project X');
-addTaskToProject(project1, toDoItem);
-addTaskToProject(project1, toDoItem1);
+// const toDoItem = createNewTask('Code', 'Make ToDo App', 'YYYY/MM/DD', 'Low', 'on hold');
+// const toDoItem1 = createNewTask('Code1', 'Make ToDo App1', 'YYYY/MM/DD', 'Mid', 'in progress');
+// const project1 = generateProject('Project X');
+// addTaskToProject(project1, toDoItem);
+// addTaskToProject(project1, toDoItem1);
 
-//console.log(getTask(project1, 'Code'))
-editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
-//deleteTask(project1, 'Code');
-//console.log(project1);
+// //console.log(getTask(project1, 'Code'))
+// editTask(getTask(project1, 'Code1'), 'Eat', undefined, '2000/09/01/', 'High');
+// //deleteTask(project1, 'Code');
+// //console.log(project1);
 
 const taskContainer = document.querySelectorAll('.task-container');
+const taskList = document.querySelector('.task-list');
 
-
-taskContainer.forEach((element) => {
-      element.setAttribute("data-after", "▼");
-      element.addEventListener('click', (e) => {
-            const taskBody = e.target.closest('.task-container').querySelector('.task-body');
-            
-            if (taskBody) {
-                const computedStyle = window.getComputedStyle(taskBody);
-                const currentDisplay = computedStyle.getPropertyValue('display');
-                
-                if (currentDisplay === "none") {
-                    taskBody.style.display = "grid";
-                } else {
-                    taskBody.style.display = "none";
-                }
-                
-                element.setAttribute("data-after", taskBody.style.display === "grid" ? "▲" : "▼");
-            } else {
-                console.error('No element with the class "task-body" was found within the target element.');
-            }
-        });
+taskContainer.forEach((obj) => {
+      obj.setAttribute("data-after", "▼");
 })
 
-//Optimize Code
+
+
+taskList.addEventListener('click', (e) => {
+      const taskContainer = e.target.closest('.task-container');
+      const taskBody = taskContainer.querySelector('.task-body');
+      const computedStyle = window.getComputedStyle(taskBody);
+      const currentDisplay = computedStyle.getPropertyValue('display');
+      
+      if(!taskContainer){
+            return;
+      }else if (currentDisplay === "none") {
+            taskBody.style.display = "grid";
+            taskContainer.setAttribute("data-after", "▲");
+      } else {
+            taskBody.style.display = "none";
+            taskContainer.setAttribute("data-after", "▼");
+      }
+});
+
+
+

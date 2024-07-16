@@ -70,7 +70,7 @@ img {
       cursor: pointer;
 }
 
-button#new-project:hover {
+button#new-project-btn:hover {
       background: #393E46;
       color: #FF8A08;
       outline: 0px solid #FF8A08;
@@ -109,13 +109,18 @@ main > h1#project-x {
 
 /** TASK **/
 
-div.task-container { 
-      width: max(300px, 80%);
+div.task-list { 
+      width: max(300px, 70%);
+}
+
+div.task-container {
+      margin-bottom: 36px;
+      cursor: pointer;
 }
 
 /** A. Task Head **/
 
-main .task-container .task-head{
+main .task-list .task-container .task-head{
       background-color: #E72929;
       padding: 16px 24px;
       display: flex;
@@ -144,7 +149,6 @@ main .task-container .task-head{
       height: 18px;
       border-bottom-left-radius: 25px;
       border-bottom-right-radius: 25px;
-      cursor: pointer;
 }
 
 
@@ -184,3 +188,24 @@ main .task-container .task-head{
       display: inline-block;
 }
 
+/** ADD TASK BUTTON **/
+button#add-task-btn {
+      background: none;
+      color:#FF8A08;
+      text-align: center;
+      font-size: 4rem;
+      width: 100%;
+      padding: 8.5px 0;
+      border: 0;
+      border-radius: 25px;
+      outline: 2px solid #FF8A08;
+      display: inline-block;
+      cursor: pointer;
+      transition: all 0.2s ease;
+}
+
+button#add-task-btn:hover {
+      outline: 0;
+      color: #393E46;
+      background-color: #FF8A08;
+}

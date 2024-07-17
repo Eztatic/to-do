@@ -8,10 +8,28 @@
     <script src="./index.js" defer async></script>
 </head>
 <body>
-    <dialog>
-        <p>This is a dialog</p>
-        <button id="add-project-btn">Add Project</button>
-        <button id="cancel-btn">Cancel</button>
+    <dialog id="task-dialog" open>
+        <form action="" id="task-input" method="dialog">
+            <label for="input-task-name">Task Name:</label> 
+            <input type="text" id="input-task-name">
+            <label for="input-description">Description:</label>
+            <textarea name="description" id="input-description"></textarea>
+            <label for="input-deadline">Due:</label>
+            <input type="datetime-local" id="deadline">
+            <fieldset>
+                <legend>Importance</legend>
+                <input type="radio" id="marginal" name="importance">
+                <label for="marginal">Marginal</label>
+                <input type="radio" id="moderate" name="importance">
+                <label for="moderate">Moderate</label>
+                <input type="radio" id="critical" name="importance">
+                <label for="critical">Critical</label>
+            </fieldset><br>
+            <div>
+                <button id="add-project-btn">Submit</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
     </dialog>
     <aside>
         <div class="user-profile">

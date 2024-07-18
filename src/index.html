@@ -8,7 +8,17 @@
     <script src="./index.js" defer async></script>
 </head>
 <body>
-    <dialog id="task-dialog" open>
+    <dialog id="project-dialog">
+        <form action="" id="project-input" method="dialog">
+            <label for="input-project-name">Project Name:</label> 
+            <input type="text" id="input-project-name"><br>
+            <div>
+                <button id="add-project-btn">Submit</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="task-dialog">
         <form action="" id="task-input" method="dialog">
             <label for="input-task-name">Task Name:</label> 
             <input type="text" id="input-task-name">

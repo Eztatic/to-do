@@ -140,7 +140,7 @@ main .task-list .task-container .task-head{
       display: inline;
 }
 
-.task-container::after {
+/* .task-container::after {
       content: attr(data-after);
       display: block;
       padding: 4px 0 8px 0;
@@ -149,7 +149,7 @@ main .task-list .task-container .task-head{
       height: 18px;
       border-bottom-left-radius: 25px;
       border-bottom-right-radius: 25px;
-}
+} */
 
 
 /** B. Task Body **/
@@ -186,6 +186,25 @@ main .task-list .task-container .task-head{
 
 .task-body > div > * {
       display: inline-block;
+}
+
+/** C. Dropdown Button **/
+.dropdown-btn {
+      display: inline-block;
+      font-size: 16px;
+      background-color: #8b8b8b;
+      width: 100%;
+      height: 24px;
+      padding: 2px 0 10px 0;
+      border: none;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 25px;
+      cursor: pointer;
+}
+
+.dropdown-btn span.arrow {
+      transform: rotate(180deg);
+      transition: transform 0.3s ease;
 }
 
 /** ADD TASK BUTTON **/

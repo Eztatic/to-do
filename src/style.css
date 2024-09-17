@@ -115,7 +115,6 @@ div.task-list {
 
 div.task-container {
       margin-bottom: 36px;
-      cursor: pointer;
 }
 
 /** A. Task Head **/
@@ -129,6 +128,7 @@ main .task-list .task-container .task-head{
       align-items: center;
       border-top-left-radius: 25px;
       border-top-right-radius: 25px;
+      cursor: pointer;
 }
 
 .task-head > .task-name {
@@ -199,10 +199,14 @@ main .task-list .task-container .task-head{
       border: none;
       border-bottom-left-radius: 25px;
       border-bottom-right-radius: 25px;
+}
+
+.dropdown-btn span {
+      display: block;
       cursor: pointer;
 }
 
-.dropdown-btn span.arrow {
+.dropdown-btn span.invert-arrow {
       transform: rotate(180deg);
       transition: transform 0.3s ease;
 }

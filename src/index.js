@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const arrow = document.createElement('span');
       arrow.textContent = "▼";
-      arrow.classList.add("arrow");
+      //arrow.classList.add("invert-arrow");
 
       const dropBtn = document.createElement('button');
       dropBtn.classList.add("dropdown-btn");
@@ -14,26 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
             container.appendChild(dropBtn);
       });
 
-      taskList.addEventListener('click', (e) => {
+
+      dropBtn.addEventListener('click', (e) => {
             const taskContainer = e.target.closest('.task-container');
             if (!taskContainer) return;
-            console.log(taskContainer);
             
             const taskBody = taskContainer.querySelector('.task-body');
             if (!taskBody) return;
-            console.log(taskBody);
-    
-            const computedStyle = window.getComputedStyle(taskBody);
-            console.log(computedStyle);
-            const currentDisplay = computedStyle.getPropertyValue('display');
-            console.log(currentDisplay);
-            
-            if (currentDisplay === "none") {
-                taskBody.style.display = "grid";
-                taskContainer.setAttribute("data-after", "▲");
-            } else {
+
+            const taskBtn = e.target.closest('.dropdown-btn span');
+
+            if(e.target.classList.contains("invert-arrow")) {
                 taskBody.style.display = "none";
-                taskContainer.setAttribute("data-after", "▼");
+                taskBtn.classList.remove("invert-arrow");
+            } else {
+                taskBody.style.display = "grid";
+                taskBtn.classList.add("invert-arrow");
             }
       });
 });
@@ -63,6 +59,41 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
   
 setupDialog('#create-project-btn', '#project-dialog', 'button#cancel-btn');
 setupDialog('#add-task-btn', '#task-dialog', 'button#cancel-btn');
+
+// dropBtn.addEventListener('click', (e) => {
+//     const taskContainer = e.target.closest('.task-container');
+//     if (!taskContainer) return;
+    
+//     const taskBody = taskContainer.querySelector('.task-body');
+//     if (!taskBody) return;
+
+//     const taskBtn = e.target.closest('.dropdown-btn span');
+//     console.log(taskBtn);
+
+//     // const computedStyle = window.getComputedStyle(taskBtn);
+//     // console.log(computedStyle);
+
+//     // const currentDisplay = computedStyle.getPropertyValue('display');
+
+//     //console.log(taskBtn.classList.contains("invert-arrow"));
+
+//     if(taskBtn.classList.contains("invert-arrow")) {
+//         taskBody.style.display = "grid";
+//         taskBtn.classList.add("invert-arrow");
+//     } else {
+//         taskBody.style.display = "none";
+//         taskBtn.classList.remove("invert-arrow");
+//     }
+    
+    
+//     // if (currentDisplay === "none") {
+//     //     taskBody.style.display = "grid";
+//     //     taskContainer.setAttribute("data-after", "▲");
+//     // } else {
+//     //     taskBody.style.display = "none";
+//     //     taskContainer.setAttribute("data-after", "▼");
+//     // }
+// });
 
 
 

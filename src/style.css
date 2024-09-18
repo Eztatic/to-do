@@ -128,7 +128,6 @@ main .task-list .task-container .task-head{
       align-items: center;
       border-top-left-radius: 25px;
       border-top-right-radius: 25px;
-      cursor: pointer;
 }
 
 .task-head > .task-name {
@@ -139,18 +138,6 @@ main .task-list .task-container .task-head{
 .date-container > *{
       display: inline;
 }
-
-/* .task-container::after {
-      content: attr(data-after);
-      display: block;
-      padding: 4px 0 8px 0;
-      font-size: 16px;
-      background-color: #8b8b8b;
-      height: 18px;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
-} */
-
 
 /** B. Task Body **/
 .task-body {
@@ -199,6 +186,7 @@ main .task-list .task-container .task-head{
       border: none;
       border-bottom-left-radius: 25px;
       border-bottom-right-radius: 25px;
+      cursor: pointer;
 }
 
 .dropdown-btn span {
@@ -206,10 +194,6 @@ main .task-list .task-container .task-head{
       cursor: pointer;
 }
 
-.dropdown-btn span.invert-arrow {
-      transform: rotate(180deg);
-      transition: transform 0.3s ease;
-}
 
 /** ADD TASK BUTTON **/
 button#add-task-btn {
@@ -284,6 +268,7 @@ label {
 }
 
 input {
+      color-scheme: dark;
       color: #fff;
       background: transparent;
       border: 2px solid #FF8A08;
@@ -330,7 +315,6 @@ dialog > form > div button:first-of-type {
       color: #fff;
       background-color: #FF8A08;
 }
-
 
 dialog > form > div {
       display: flex;

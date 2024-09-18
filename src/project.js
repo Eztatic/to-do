@@ -47,7 +47,6 @@ editProject(getProject('Project A'), undefined);
 deleteProject('Project B');
 console.log(projects);
 
-
 // const addTaskToProject = (project, task) => {
 //       project.toDoList.push(task);
 // }

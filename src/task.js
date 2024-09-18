@@ -8,7 +8,7 @@ const createNewTask = (title, description, dueDate, priority, status) => {
       };
 
       return newTask;
-} 
+}
 
 const getTaskIndex = (project, taskName) => {
       return project.toDoList.findIndex(task => task.title.toLowerCase() === taskName.toLowerCase());

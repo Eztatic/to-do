@@ -135,9 +135,6 @@ main .task-list .task-container .task-head{
       font-weight: 800;
 }
 
-.date-container > *{
-      display: inline;
-}
 
 /** B. Task Body **/
 .task-body {
@@ -166,13 +163,9 @@ main .task-list .task-container .task-head{
       line-height: 18px;
       grid-column: 1 / 3;
 }
-.task-body > div {
+.task-body > p:last-child {
       grid-column: 2 / 3;
       align-self: center;
-}
-
-.task-body > div > * {
-      display: inline-block;
 }
 
 /** C. Dropdown Button **/
@@ -193,7 +186,6 @@ main .task-list .task-container .task-head{
       display: block;
       cursor: pointer;
 }
-
 
 /** ADD TASK BUTTON **/
 button#add-task-btn {

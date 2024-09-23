@@ -35,12 +35,16 @@ const config = {
             },
             {
                 test: /\.css$/i,
-                use: [stylesHandler,'css-loader'],
+                use: ['style-loader','css-loader'],
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf|png|svg|jpg|jpeg|gif)$/i,
-                type: 'asset',
+                type: 'asset/resource',
             },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            }
         ],
     },
 };

@@ -133,6 +133,24 @@ main .task-list .task-container .task-head{
 .task-head > .task-name {
       font-size: 1.2rem;
       font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+}
+
+.task-name::before{
+      content: '';
+      margin-right: 8px;
+      display: inline-block;
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background-image: url('./images/unchecked.png');
+      background-size: cover;
+      background-position: center;
+}
+
+.task-head > .task-name.checked::before{
+      background-image: url('./images/checked.png');
 }
 
 

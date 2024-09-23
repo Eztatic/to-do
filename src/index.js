@@ -1,5 +1,6 @@
-import {isBefore, isAfter, parseISO} from 'date-fns';
+import {isAfter, parseISO, format} from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
+import './style.css';
 
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
     const dialog = document.querySelector(dialogSelector);
@@ -99,6 +100,18 @@ newTask();
 const getTaskInputs = () => {
     const taskName = document.querySelector('#input-task-name');
     const taskDescription = document.querySelector('#input-description');
+    const date = document.querySelector("#task-dialog input#deadline").value;
+    const formattedDate = format(date, 'MM-dd-yyyy HH:mm');
+    const parsedDate = parseISO(date);
+    const today = new Date();
+    const checkDeadline = isAfter(today, parsedDate);
+    const status = undefined;
+    if(checkDeadline == true) {
+        status = "Late";
+    } else {
+        status = "Ongoing";
+    }
+
 }
 
 const submit = document.querySelector("button#submit-btn");
@@ -107,13 +120,19 @@ submit.addEventListener("click", () => {
     const parsedDate = parseISO(date);
     const today = new Date();
     const check = isAfter(today, parsedDate);
-    console.log(check);
+    const formattedDate = format(date, 'MMMM-dd-yyyy hh:mm a');
+    console.log(formattedDate);
     if(check == true) {
         console.log("Late");
     } else {
         console.log("Ongoing");
     }
 });
+
+const complete = document.querySelector('.task-name');
+complete.addEventListener("click", () => {
+    complete.classList.toggle("checked");
+})
 
 
 

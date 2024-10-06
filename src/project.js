@@ -5,9 +5,12 @@ const createProject = (name) => {
 
       newProject.name = name;
       newProject.toDoList = [];
+      projects.push(newProject);
 
-      return projects.push(newProject);
+      return newProject;
 }
+
+
 
 const getProjectIndex = (projectName) => {
       return projects.findIndex(project => project.name.toLowerCase() === projectName.toLowerCase());
@@ -39,13 +42,15 @@ const deleteProject = (projectName) => {
       }
 }
 
-const ProjectA = createProject('Project A');
-const ProjectB = createProject('Project B');
+export {createProject, getProject, editProject, deleteProject}
+
+// const ProjectA = createProject('Project A');
+// const ProjectB = createProject('Project B');
 //console.log(projects);
 //console.log(getProject('Project A'));
-editProject(getProject('Project A'), undefined);
-deleteProject('Project B');
-console.log(projects);
+// editProject(getProject('Project A'), undefined);
+// deleteProject('Project B');
+// console.log(projects);
 
 // const addTaskToProject = (project, task) => {
 //       project.toDoList.push(task);

@@ -1,6 +1,9 @@
 import {isAfter, parseISO, format} from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
+import { createProject, getProject, editProject, deleteProject } from "./project.js"
 import './style.css';
+
+const testProject = createProject("Project X");
 
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
     const dialog = document.querySelector(dialogSelector);
@@ -24,6 +27,32 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
   
 setupDialog('#create-project-btn', '#project-dialog', 'button#cancel-btn');
 setupDialog('#add-task-btn', '#task-dialog', 'button#cancel-btn');
+
+const getTaskInputs = () => {
+    const taskName = document.querySelector('#input-task-name').value;
+    const taskDescription = document.querySelector('#input-description').value;
+    const date = document.querySelector("#task-dialog input#deadline").value;
+    const formattedDate = format(date, 'MM-dd-yyyy HH:mm');
+    const parsedDate = parseISO(date);
+    const today = new Date();
+    const checkDeadline = isAfter(today, parsedDate);
+    let status = undefined;
+    if(checkDeadline == true) {
+        status = "Late";
+    } else {
+        status = "In Progress";
+    }
+
+    let taskPriority = document.querySelector('input[name="importance"]:checked').value;
+    return [taskName, taskDescription, formattedDate, taskPriority, status];
+}
+
+const submit = document.querySelector("#task-dialog button#submit-btn");
+submit.addEventListener("click", () => {
+    testProject.toDoList.push(createNewTask(...getTaskInputs()));
+    console.log(testProject);
+});
+
 
 const newTask = () => {
     const taskList = document.querySelector(".task-list");
@@ -91,48 +120,42 @@ const newTask = () => {
             dropBtn.textContent = "▼"; 
         }
     });
+
+
+    taskName.addEventListener("click", (e) => {
+        taskName.classList.toggle("checked");
+        let status = e.target.parentElement.parentElement.querySelector(".status");
+        if(taskName.classList.contains("checked")) {
+            status.innerText = "Completed";
+        } else {
+            status.innerText = "In Progress";   
+        }
+    });
     
     taskList.prepend(taskContainer);
 }
 
 newTask();
 
-const getTaskInputs = () => {
-    const taskName = document.querySelector('#input-task-name');
-    const taskDescription = document.querySelector('#input-description');
-    const date = document.querySelector("#task-dialog input#deadline").value;
-    const formattedDate = format(date, 'MM-dd-yyyy HH:mm');
-    const parsedDate = parseISO(date);
-    const today = new Date();
-    const checkDeadline = isAfter(today, parsedDate);
-    const status = undefined;
-    if(checkDeadline == true) {
-        status = "Late";
-    } else {
-        status = "Ongoing";
-    }
+// const submit = document.querySelector("#task-dialog button#submit-btn");
+// submit.addEventListener("click", (e) => {
+//     const date = document.querySelector("#task-dialog input#deadline").value;
+//     const parsedDate = parseISO(date);
+//     const today = new Date();
+//     const check = isAfter(today, parsedDate);
+//     const formattedDate = format(date, 'MMMM-dd-yyyy hh:mm a');
+//     console.log(formattedDate);
+//     if(check == true) {
+//         console.log("Late");
+//     } else {
+//         console.log("Ongoing");
+//     }
+// });
 
-}
 
-const submit = document.querySelector("button#submit-btn");
-submit.addEventListener("click", () => {
-    const date = document.querySelector("#task-dialog input#deadline").value;
-    const parsedDate = parseISO(date);
-    const today = new Date();
-    const check = isAfter(today, parsedDate);
-    const formattedDate = format(date, 'MMMM-dd-yyyy hh:mm a');
-    console.log(formattedDate);
-    if(check == true) {
-        console.log("Late");
-    } else {
-        console.log("Ongoing");
-    }
-});
 
-const complete = document.querySelector('.task-name');
-complete.addEventListener("click", () => {
-    complete.classList.toggle("checked");
-})
+
+
 
 
 

@@ -14,12 +14,15 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
     if (openBtn && dialog && closeBtn) {
         openBtn.addEventListener("click", () => {
             dialog.showModal();
+            if (form) {
+                form.reset();
+            }
         });
   
         closeBtn.addEventListener("click", () => {
             dialog.close();
-              if (form) {
-                  form.reset();
+            if (form) {
+                form.reset();
             }
         });
     }
@@ -47,14 +50,7 @@ const getTaskInputs = () => {
     return [taskName, taskDescription, formattedDate, taskPriority, status];
 }
 
-const submit = document.querySelector("#task-dialog button#submit-btn");
-submit.addEventListener("click", () => {
-    testProject.toDoList.push(createNewTask(...getTaskInputs()));
-    console.log(testProject);
-});
-
-
-const newTask = () => {
+const newTask = (name, description, formattedDate, priority, status) => {
     const taskList = document.querySelector(".task-list");
     const taskContainer = document.createElement("div");
 
@@ -69,6 +65,9 @@ const newTask = () => {
     const taskDescription = document.createElement("p");
     const statusLabel = document.createElement("p");
     const taskStatus = document.createElement("span");
+    const iconContainer = document.createElement("div");
+    const editBtn = document.createElement("span");
+    const deleteBtn = document.createElement("span");
 
     const dropBtn = document.createElement('button');
 
@@ -83,16 +82,24 @@ const newTask = () => {
     taskDescription.classList.add("description");
     taskStatus.classList.add("status");
     dropBtn.classList.add("dropdown-btn");
+    iconContainer.classList.add("icons");
+    editBtn.classList.add("edit");
+    editBtn.classList.add("material-symbols-outlined");
+    deleteBtn.classList.add("delete");
+    deleteBtn.classList.add("material-symbols-outlined");
+    
 
-    taskName.innerText = "Task Name 1";
+    taskName.innerText = name;
     dateLabel.innerText = "Due:  ";
-    date.innerText = "YYYY/MM/DD";
+    date.innerText = formattedDate;
 
     descriptionLabel.innerText = "Description";
-    taskPriority.innerText = "Important";
-    taskDescription.innerText = "Sample Description";
+    taskPriority.innerText = priority;
+    taskDescription.innerText = description;
     statusLabel.innerText = "Status:  ";
-    taskStatus.innerText = "In progress";
+    taskStatus.innerText = status;
+    editBtn.innerText = "edit";
+    deleteBtn.innerText = "delete";
     dropBtn.textContent = "▼";
 
     taskHead.appendChild(taskName);
@@ -102,8 +109,12 @@ const newTask = () => {
     taskBody.appendChild(descriptionLabel);
     taskBody.appendChild(taskPriority);
     taskBody.appendChild(taskDescription);
+    taskBody.appendChild(iconContainer);
+    iconContainer.appendChild(editBtn);
+    iconContainer.appendChild(deleteBtn);
     taskBody.appendChild(statusLabel);
     statusLabel.appendChild(taskStatus);
+    
 
     taskContainer.appendChild(taskHead);
     taskContainer.appendChild(taskBody);
@@ -134,8 +145,15 @@ const newTask = () => {
     
     taskList.prepend(taskContainer);
 }
+//newTask();
 
-newTask();
+const submit = document.querySelector("#task-dialog button#submit-btn");
+submit.addEventListener("click", () => {
+    testProject.toDoList.push(createNewTask(...getTaskInputs()));
+    newTask(...getTaskInputs())
+    //console.log(testProject.toDoList.at(-1));
+});
+
 
 // const submit = document.querySelector("#task-dialog button#submit-btn");
 // submit.addEventListener("click", (e) => {

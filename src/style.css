@@ -372,6 +372,15 @@ label[for*='critical'] {
       color: #ff3030;
 }
 
+input[type="radio"] {
+      accent-color: #FF8A08;
+}
+
+input[type="radio"]:focus {
+      outline: none;
+      border: none;
+}
+
 /** Project Dialog **/
 #project-dialog {
       background-color: #393E46;

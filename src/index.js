@@ -28,16 +28,26 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
         });
     }
 }
- 
 setupDialog('#create-project-btn', '#project-dialog', 'button#cancel-btn');
 setupDialog('#add-task-btn', '#task-dialog', 'button#cancel-btn');
 
 const getTaskInputs = () => {
-    const taskName = document.querySelector('#input-task-name').value;
-    const taskDescription = document.querySelector('#input-description').value;
-    const date = document.querySelector("#task-dialog input#deadline").value;
+    let taskName = document.querySelector('#input-task-name').value;
+    let taskDescription = document.querySelector('#input-description').value;
+    let date = document.querySelector("#task-dialog input#deadline").value;
+    let taskPriority = document.querySelector('input[name="importance"]:checked').value;
     let formattedDate = undefined;
     let status = undefined;
+
+    if (!taskName || !taskDescription) {
+        alert("Task Name and Description must be filled out");
+        return false;
+    } 
+    
+    // if (!taskDescription) {
+    //     taskDescription = "No description given";
+    // }
+
     if(date){
         formattedDate = format(date, 'MM-dd-yyyy HH:mm');
         const parsedDate = parseISO(date);
@@ -50,21 +60,20 @@ const getTaskInputs = () => {
         } 
     } else {
         formattedDate = "No Date Set";
+        status = "In Progress";
     }
     
-    let taskPriority = document.querySelector('input[name="importance"]:checked').value;
+    
     return [taskName, taskDescription, formattedDate, taskPriority, status];
 }
 
 const newTask = (name, description, formattedDate, priority, status) => {
     const taskList = document.querySelector(".task-list");
     const taskContainer = document.createElement("div");
-
     const taskHead = document.createElement("div");
     const taskName = document.createElement("p");
     const dateLabel = document.createElement("p");
     const date = document.createElement("span");
-
     const taskBody = document.createElement("div");
     const descriptionLabel = document.createElement("p");
     const taskPriority = document.createElement("p");
@@ -74,15 +83,12 @@ const newTask = (name, description, formattedDate, priority, status) => {
     const iconContainer = document.createElement("div");
     const editBtn = document.createElement("span");
     const deleteBtn = document.createElement("span");
-
     const dropBtn = document.createElement('button');
 
     taskContainer.classList.add("task-container");
-
     taskHead.classList.add("task-head");
     taskName.classList.add("task-name");
     date.classList.add("due-date");
-
     taskBody.classList.add("task-body");
     taskPriority.classList.add("priority");
     taskDescription.classList.add("description");
@@ -94,11 +100,9 @@ const newTask = (name, description, formattedDate, priority, status) => {
     deleteBtn.classList.add("delete");
     deleteBtn.classList.add("material-symbols-outlined");
     
-
     taskName.innerText = name;
     dateLabel.innerText = "Due:  ";
     date.innerText = formattedDate;
-
     descriptionLabel.innerText = "Description";
     taskPriority.innerText = priority;
     taskDescription.innerText = description;
@@ -111,7 +115,6 @@ const newTask = (name, description, formattedDate, priority, status) => {
     taskHead.appendChild(taskName);
     taskHead.appendChild(dateLabel);
     dateLabel.appendChild(date);
-
     taskBody.appendChild(descriptionLabel);
     taskBody.appendChild(taskPriority);
     taskBody.appendChild(taskDescription);
@@ -120,11 +123,20 @@ const newTask = (name, description, formattedDate, priority, status) => {
     iconContainer.appendChild(deleteBtn);
     taskBody.appendChild(statusLabel);
     statusLabel.appendChild(taskStatus);
-    
-
     taskContainer.appendChild(taskHead);
     taskContainer.appendChild(taskBody);
     taskContainer.appendChild(dropBtn);
+
+    if(priority == "Marginal") {
+        taskPriority.style.color = "#1cd131";
+        taskHead.style.backgroundColor = "#1cd131";
+    } else if (priority == "Moderate") {
+        taskPriority.style.color = "#FFC000";
+        taskHead.style.backgroundColor = "#FFC000";
+    } else if (priority == "Critical") {
+        taskPriority.style.color = "#ff3030";
+        taskHead.style.backgroundColor = "#ff3030";
+    }
 
     dropBtn.addEventListener('click', () => {
         if (!taskBody) return;
@@ -138,27 +150,37 @@ const newTask = (name, description, formattedDate, priority, status) => {
         }
     });
 
-
-    taskName.addEventListener("click", (e) => {
-        taskName.classList.toggle("checked");
-        let status = e.target.parentElement.parentElement.querySelector(".status");
-        if(taskName.classList.contains("checked")) {
+    taskName.addEventListener("click", function() {
+        this.classList.toggle("checked");
+        let status = this.parentElement.parentElement.querySelector(".status");
+        if(this.classList.contains("checked")) {
             status.innerText = "Completed";
         } else {
             status.innerText = "In Progress";   
         }
     });
+
+    deleteBtn.addEventListener("click", function() {
+        let taskName = this.closest(".task-container").querySelector(".task-name").innerText;
+        let taskDescription = this.closest(".task-container").querySelector(".description").innerText;
+        this.closest(".task-container").remove();
+        deleteTask(testProject, taskName, taskDescription);
+        //console.log(testProject.toDoList);
+    });
     
     taskList.prepend(taskContainer);
 }
-//newTask();
 
+//Create New Task
 const submit = document.querySelector("#task-dialog button#submit-btn");
 submit.addEventListener("click", () => {
+    if(getTaskInputs() == false) {
+        return;
+    }
     testProject.toDoList.push(createNewTask(...getTaskInputs()));
     newTask(...getTaskInputs());
     //console.log(testProject.toDoList.at(-1));
-    console.log(getTaskInputs()[0]);
+    //console.log(getTaskInputs()[2]);
 });
 
 

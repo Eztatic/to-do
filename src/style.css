@@ -120,7 +120,7 @@ div.task-container {
 /** A. Task Head **/
 
 main .task-list .task-container .task-head{
-      background-color: #E72929;
+      background-color: #FF8A08;
       padding: 16px 24px;
       display: flex;
       flex-wrap: wrap;
@@ -173,7 +173,7 @@ main .task-list .task-container .task-head{
 }
 
 .task-body > p:nth-child(2) {
-      color: #ff0000;
+      color: #FF8A08;
       font-weight: 600;
       padding-top: 8px
 }
@@ -360,12 +360,16 @@ dialog > form > div {
       align-items: center;
 }
 
+fieldset > label {
+      color: #FF8A08;
+}
+
 label[for*='marginal'] {
-      color: #00ff1c;
+      color: #1cd131;
 }
 
 label[for*='moderate'] {
-      color: #eeff00;
+      color: #FFC000;
 }
 
 label[for*='critical'] {

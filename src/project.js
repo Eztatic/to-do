@@ -42,7 +42,7 @@ const deleteProject = (projectName) => {
       }
 }
 
-export {createProject, getProject, editProject, deleteProject}
+export {createProject, getProject, editProject, deleteProject};
 
 // const ProjectA = createProject('Project A');
 // const ProjectB = createProject('Project B');

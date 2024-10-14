@@ -24,9 +24,9 @@
             <label for="input-task-name">Task Name:</label> 
             <input type="text" id="input-task-name" required>
             <label for="input-description">Description:</label>
-            <textarea name="description" id="input-description" required></textarea>
+            <textarea id="input-description" required></textarea>
             <label for="input-deadline">Due:</label>
-            <input type="datetime-local" id="deadline">
+            <input type="datetime-local" id="input-deadline">
             <fieldset>
                 <legend>Priority</legend>
                 <input type="radio" id="marginal" name="importance" value="Marginal" checked="checked">
@@ -38,6 +38,32 @@
             </fieldset><br>
             <div>
                 <button id="submit-btn">Submit</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="edit-dialog">
+        <form action="" id="task-input" method="dialog">
+            <label for="input-task-name">Task Name:</label> 
+            <input type="text" id="input-task-name" required>
+            <label for="input-description">Description:</label>
+            <textarea id="input-description" required></textarea>
+            <label for="input-deadline">Due:</label>
+            <div class="date-container">
+                <span>Task Date: <span class="current-date"></span></span>
+                <input type="datetime-local" id="input-deadline">
+            </div>
+            <fieldset>
+                <legend>Priority</legend>
+                <input type="radio" id="marginal" name="importance" value="Marginal" >
+                <label for="marginal">Marginal</label>
+                <input type="radio" id="moderate" name="importance" value="Moderate">
+                <label for="moderate">Moderate</label>
+                <input type="radio" id="critical" name="importance" value="Critical">
+                <label for="critical">Critical</label>
+            </fieldset><br>
+            <div>
+                <button id="save-btn">Save</button>
                 <button id="cancel-btn">Cancel</button>
             </div>
         </form>

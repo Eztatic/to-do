@@ -1,10 +1,12 @@
-import {isAfter, parseISO, format} from 'date-fns';
+import { isAfter, parseISO, format } from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
 import { createProject, getProject, editProject, deleteProject } from "./project.js"
 import './style.css';
 
 //TEMPORARY
 const testProject = createProject("Project X");
+let before;
+let tempNodes;
 
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
     const dialog = document.querySelector(dialogSelector);
@@ -30,26 +32,23 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
 }
 setupDialog('#create-project-btn', '#project-dialog', 'button#cancel-btn');
 setupDialog('#add-task-btn', '#task-dialog', 'button#cancel-btn');
+//setupDialog('.edit', '#edit-dialog', 'button#cancel-btn');
 
-const getTaskInputs = () => {
-    let taskName = document.querySelector('#input-task-name').value;
-    let taskDescription = document.querySelector('#input-description').value;
-    let date = document.querySelector("#task-dialog input#deadline").value;
-    let taskPriority = document.querySelector('input[name="importance"]:checked').value;
+const getTaskInputs = (dialog) => {
+    let taskName = document.querySelector(`#${dialog}-dialog #input-task-name`).value;
+    let taskDescription = document.querySelector(`#${dialog}-dialog #input-description`).value;
+    let date = document.querySelector(`#${dialog}-dialog input#input-deadline`).value;
+    let taskPriority = document.querySelector(`#${dialog}-dialog input[name="importance"]:checked`).value;
     let formattedDate = undefined;
     let status = undefined;
 
     if (!taskName || !taskDescription) {
         alert("Task Name and Description must be filled out");
         return false;
-    } 
-    
-    // if (!taskDescription) {
-    //     taskDescription = "No description given";
-    // }
+    }
 
     if(date){
-        formattedDate = format(date, 'MM-dd-yyyy HH:mm');
+        formattedDate = format(date, 'MM-dd-yyyy HH:mm a');
         const parsedDate = parseISO(date);
         const today = new Date();
         const checkDeadline = isAfter(today, parsedDate);
@@ -63,10 +62,10 @@ const getTaskInputs = () => {
         status = "In Progress";
     }
     
-    
     return [taskName, taskDescription, formattedDate, taskPriority, status];
 }
 
+//Construct New Task
 const newTask = (name, description, formattedDate, priority, status) => {
     const taskList = document.querySelector(".task-list");
     const taskContainer = document.createElement("div");
@@ -151,13 +150,46 @@ const newTask = (name, description, formattedDate, priority, status) => {
     });
 
     taskName.addEventListener("click", function() {
-        this.classList.toggle("checked");
+        let taskName = this.closest(".task-container").querySelector(".task-name").innerText;
+        let taskDescription = this.closest(".task-container").querySelector(".description").innerText;
         let status = this.parentElement.parentElement.querySelector(".status");
+        this.classList.toggle("checked");
         if(this.classList.contains("checked")) {
             status.innerText = "Completed";
         } else {
             status.innerText = "In Progress";   
         }
+        editTask(testProject, taskName, taskDescription, status.innerText);
+        console.log(testProject.toDoList);
+    });
+
+    editBtn.addEventListener("click", function() {
+        const editDialog = document.querySelector('#edit-dialog');
+
+        const taskName = this.closest(".task-container").querySelector(".task-name");
+        const taskDescription = this.closest(".task-container").querySelector(".description");
+        const taskDate = this.closest(".task-container").querySelector(".due-date");
+        const priority = this.closest(".task-container").querySelector(".priority");
+
+        before = getTask(testProject, taskName.innerText, taskDescription.innerText);
+        tempNodes = [taskName, taskDescription, taskDate, priority];
+
+        let getTaskName = document.querySelector('#edit-dialog #input-task-name')
+        let getTaskDescription = document.querySelector('#edit-dialog #input-description');
+        let getTaskDate = document.querySelector('#edit-dialog .current-date');
+        let getTaskPriority = document.querySelectorAll('#edit-dialog input[name="importance"]');
+
+        getTaskName.value = taskName.innerText;
+        getTaskDescription.value = taskDescription.innerText;
+        getTaskDate.innerText = taskDate.innerText;
+        for (let currentTaskPriority of getTaskPriority) {
+            if(priority.innerText == currentTaskPriority.value) {
+                currentTaskPriority.setAttribute("checked", "checked");
+                break;
+            }
+        }
+
+        editDialog.showModal();
     });
 
     deleteBtn.addEventListener("click", function() {
@@ -171,17 +203,42 @@ const newTask = (name, description, formattedDate, priority, status) => {
     taskList.prepend(taskContainer);
 }
 
-//Create New Task
+//Deploy New Task
 const submit = document.querySelector("#task-dialog button#submit-btn");
 submit.addEventListener("click", () => {
-    if(getTaskInputs() == false) {
+    if(getTaskInputs('task') == false) {
         return;
     }
-    testProject.toDoList.push(createNewTask(...getTaskInputs()));
-    newTask(...getTaskInputs());
-    //console.log(testProject.toDoList.at(-1));
-    //console.log(getTaskInputs()[2]);
+    newTask(...getTaskInputs('task'));
+    testProject.toDoList.push(createNewTask(...getTaskInputs('task')));
 });
+
+//Edit Task
+const save = document.querySelector("#edit-dialog button#save-btn");
+save.addEventListener("click", () => {
+    if(getTaskInputs('edit') == false) {
+        return;
+    }
+
+    editTask(testProject, before['title'], before['description'], ...getTaskInputs('edit'));
+    for(let i = 0; i <= 3; i++) {
+        tempNodes[i].innerText = getTaskInputs('edit')[i];
+    }
+
+    let taskPriority = tempNodes[3];
+    let taskHead = tempNodes[0].closest('.task-head');
+    if(tempNodes[3].innerText == "Marginal") {
+        taskPriority.style.color = "#1cd131";
+        taskHead.style.backgroundColor = "#1cd131";
+    } else if (tempNodes[3].innerText == "Moderate") {
+        taskPriority.style.color = "#FFC000";
+        taskHead.style.backgroundColor = "#FFC000";
+    } else if (tempNodes[3].innerText == "Critical") {
+        taskPriority.style.color = "#ff3030";
+        taskHead.style.backgroundColor = "#ff3030";
+    }
+});        
+
 
 
 

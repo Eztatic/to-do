@@ -10,8 +10,6 @@ const createProject = (name) => {
       return newProject;
 }
 
-
-
 const getProjectIndex = (projectName) => {
       return projects.findIndex(project => project.name.toLowerCase() === projectName.toLowerCase());
 }

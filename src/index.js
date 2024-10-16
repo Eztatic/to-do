@@ -5,8 +5,6 @@ import './style.css';
 
 //TEMPORARY
 const testProject = createProject("Project X");
-let before;
-let tempNodes;
 
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
     const dialog = document.querySelector(dialogSelector);
@@ -63,6 +61,20 @@ const getTaskInputs = (dialog) => {
     }
     
     return [taskName, taskDescription, formattedDate, taskPriority, status];
+}
+
+const priorityColor = (taskPriority, taskName) => {
+    const taskHead = taskName.parentElement;
+    if(taskPriority.innerText == "Marginal") {
+        taskPriority.style.color = "#1cd131";
+        taskHead.style.backgroundColor = "#1cd131";
+    } else if (taskPriority.innerText == "Moderate") {
+        taskPriority.style.color = "#FFC000";
+        taskHead.style.backgroundColor = "#FFC000";
+    } else if (taskPriority.innerText == "Critical") {
+        taskPriority.style.color = "#ff3030";
+        taskHead.style.backgroundColor = "#ff3030";
+    }        
 }
 
 //Construct New Task
@@ -126,16 +138,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
     taskContainer.appendChild(taskBody);
     taskContainer.appendChild(dropBtn);
 
-    if(priority == "Marginal") {
-        taskPriority.style.color = "#1cd131";
-        taskHead.style.backgroundColor = "#1cd131";
-    } else if (priority == "Moderate") {
-        taskPriority.style.color = "#FFC000";
-        taskHead.style.backgroundColor = "#FFC000";
-    } else if (priority == "Critical") {
-        taskPriority.style.color = "#ff3030";
-        taskHead.style.backgroundColor = "#ff3030";
-    }
+    priorityColor(taskPriority, taskName);
 
     dropBtn.addEventListener('click', () => {
         if (!taskBody) return;
@@ -160,25 +163,28 @@ const newTask = (name, description, formattedDate, priority, status) => {
             status.innerText = "In Progress";   
         }
         editTask(testProject, taskName, taskDescription, status.innerText);
-        console.log(testProject.toDoList);
     });
 
     editBtn.addEventListener("click", function() {
         const editDialog = document.querySelector('#edit-dialog');
 
+        // Selected Task Nodes
         const taskName = this.closest(".task-container").querySelector(".task-name");
         const taskDescription = this.closest(".task-container").querySelector(".description");
         const taskDate = this.closest(".task-container").querySelector(".due-date");
         const priority = this.closest(".task-container").querySelector(".priority");
 
-        before = getTask(testProject, taskName.innerText, taskDescription.innerText);
-        tempNodes = [taskName, taskDescription, taskDate, priority];
+        // Store Task Nodes and Data Temporarily
+        let oldTempData = getTask(testProject, taskName.innerText, taskDescription.innerText);
+        let taskComp = [taskName, taskDescription, taskDate, priority];
 
+        // Get Edit Task Input Nodes
         let getTaskName = document.querySelector('#edit-dialog #input-task-name')
         let getTaskDescription = document.querySelector('#edit-dialog #input-description');
         let getTaskDate = document.querySelector('#edit-dialog .current-date');
         let getTaskPriority = document.querySelectorAll('#edit-dialog input[name="importance"]');
 
+        // Replace Old Task Values
         getTaskName.value = taskName.innerText;
         getTaskDescription.value = taskDescription.innerText;
         getTaskDate.innerText = taskDate.innerText;
@@ -188,6 +194,21 @@ const newTask = (name, description, formattedDate, priority, status) => {
                 break;
             }
         }
+
+        // Invoke Changes
+        const save = document.querySelector("#edit-dialog button#save-btn");
+        save.addEventListener("click", () => {
+            if(getTaskInputs('edit') == false) {
+                return;
+            }
+
+            editTask(testProject, oldTempData['title'], oldTempData['description'], ...getTaskInputs('edit'));
+            for(let i = 0; i <= 3; i++) {
+                taskComp[i].innerText = getTaskInputs('edit')[i];
+            }
+
+            priorityColor(priority, taskName);
+        });
 
         editDialog.showModal();
     });
@@ -203,7 +224,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
     taskList.prepend(taskContainer);
 }
 
-//Deploy New Task
+//Deploy Task
 const submit = document.querySelector("#task-dialog button#submit-btn");
 submit.addEventListener("click", () => {
     if(getTaskInputs('task') == false) {
@@ -212,32 +233,7 @@ submit.addEventListener("click", () => {
     newTask(...getTaskInputs('task'));
     testProject.toDoList.push(createNewTask(...getTaskInputs('task')));
 });
-
-//Edit Task
-const save = document.querySelector("#edit-dialog button#save-btn");
-save.addEventListener("click", () => {
-    if(getTaskInputs('edit') == false) {
-        return;
-    }
-
-    editTask(testProject, before['title'], before['description'], ...getTaskInputs('edit'));
-    for(let i = 0; i <= 3; i++) {
-        tempNodes[i].innerText = getTaskInputs('edit')[i];
-    }
-
-    let taskPriority = tempNodes[3];
-    let taskHead = tempNodes[0].closest('.task-head');
-    if(tempNodes[3].innerText == "Marginal") {
-        taskPriority.style.color = "#1cd131";
-        taskHead.style.backgroundColor = "#1cd131";
-    } else if (tempNodes[3].innerText == "Moderate") {
-        taskPriority.style.color = "#FFC000";
-        taskHead.style.backgroundColor = "#FFC000";
-    } else if (tempNodes[3].innerText == "Critical") {
-        taskPriority.style.color = "#ff3030";
-        taskHead.style.backgroundColor = "#ff3030";
-    }
-});        
+      
 
 
 

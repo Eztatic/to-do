@@ -53,7 +53,16 @@ img {
 
 .projects-container li {
       font-size: 1.1rem;
-      padding: 0.6rem 0;
+      padding: 0.6rem 0.5rem;
+      border: 0;
+      border-radius: 4px;
+      cursor: pointer;
+}
+
+.projects-container li:hover {
+      color: #FF8A08;
+      background-color: #393E46;
+      outline: 2px solid #393E46;
 }
 
 .projects-container > button#create-project-btn{
@@ -96,7 +105,7 @@ main {
       gap: 24px;
 }
 
-main > h1#project-x {
+main > h1#project-name {
       color: #000;
       background-color: #FF8A08;
       width: 100%;

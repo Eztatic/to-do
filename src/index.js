@@ -3,7 +3,7 @@ import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
 import { createProject, getProject, editProject, deleteProject } from "./project.js"
 import './style.css';
 
-//TEMPORARY
+//FOR TEST
 const testProject = createProject("Project X");
 
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
@@ -30,7 +30,6 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
 }
 setupDialog('#create-project-btn', '#project-dialog', 'button#cancel-btn');
 setupDialog('#add-task-btn', '#task-dialog', 'button#cancel-btn');
-//setupDialog('.edit', '#edit-dialog', 'button#cancel-btn');
 
 const getTaskInputs = (dialog) => {
     let taskName = document.querySelector(`#${dialog}-dialog #input-task-name`).value;
@@ -224,16 +223,39 @@ const newTask = (name, description, formattedDate, priority, status) => {
     taskList.prepend(taskContainer);
 }
 
-//Deploy Task
-const submit = document.querySelector("#task-dialog button#submit-btn");
-submit.addEventListener("click", () => {
+//Add Task to Project
+const addTaskToProject = document.querySelector("#task-dialog button#submit-btn");
+addTaskToProject.addEventListener("click", () => {
     if(getTaskInputs('task') == false) {
         return;
     }
-    newTask(...getTaskInputs('task'));
     testProject.toDoList.push(createNewTask(...getTaskInputs('task')));
+    newTask(...Object.values(testProject.toDoList.at(-1)));
 });
-      
+
+
+//UI: PROJECT
+const getProjectName = () => {
+    const projectName = document.querySelector('#input-project-name').value;
+    return projectName;
+}
+
+const constructProject = () => {
+    const projContainer = document.querySelector('.project-list');
+    const project = document.createElement('li');
+    
+    project.innerText = getProjectName();   
+    project.setAttribute('id', getProjectName().toLowerCase().replace(' ', '-'));
+    projContainer.appendChild(project);
+} 
+
+const addProjectToList = document.querySelector('#create');
+addProjectToList.addEventListener('click', () => {
+    createProject(getProjectName());
+    constructProject();
+})
+
+
 
 
 

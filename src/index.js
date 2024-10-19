@@ -1,10 +1,10 @@
 import { isAfter, parseISO, format } from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
-import { createProject, getProject, editProject, deleteProject } from "./project.js"
+import { createProject, getProject, editProject, deleteProject, projectLength} from "./project.js"
 import './style.css';
 
 //FOR TEST
-const testProject = createProject("Project X");
+// const testProject = createProject("Project X");
 
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
     const dialog = document.querySelector(dialogSelector);
@@ -161,7 +161,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
         } else {
             status.innerText = "In Progress";   
         }
-        editTask(testProject, taskName, taskDescription, status.innerText);
+        editTask(getProject(projectTitle()), taskName, taskDescription, status.innerText);
     });
 
     editBtn.addEventListener("click", function() {
@@ -174,7 +174,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
         const priority = this.closest(".task-container").querySelector(".priority");
 
         // Store Task Nodes and Data Temporarily
-        let oldTempData = getTask(testProject, taskName.innerText, taskDescription.innerText);
+        let oldTempData = getTask(getProject(projectTitle()), taskName.innerText, taskDescription.innerText);
         let taskComp = [taskName, taskDescription, taskDate, priority];
 
         // Get Edit Task Input Nodes
@@ -201,7 +201,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
                 return;
             }
 
-            editTask(testProject, oldTempData['title'], oldTempData['description'], ...getTaskInputs('edit'));
+            editTask(getProject(projectTitle()), oldTempData['title'], oldTempData['description'], ...getTaskInputs('edit'));
             for(let i = 0; i <= 3; i++) {
                 taskComp[i].innerText = getTaskInputs('edit')[i];
             }
@@ -216,8 +216,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
         let taskName = this.closest(".task-container").querySelector(".task-name").innerText;
         let taskDescription = this.closest(".task-container").querySelector(".description").innerText;
         this.closest(".task-container").remove();
-        deleteTask(testProject, taskName, taskDescription);
-        //console.log(testProject.toDoList);
+        deleteTask(getProject(projectTitle()), taskName, taskDescription);
     });
     
     taskList.prepend(taskContainer);
@@ -229,31 +228,84 @@ addTaskToProject.addEventListener("click", () => {
     if(getTaskInputs('task') == false) {
         return;
     }
-    testProject.toDoList.push(createNewTask(...getTaskInputs('task')));
-    newTask(...Object.values(testProject.toDoList.at(-1)));
+    getProject(projectTitle()).toDoList.push(createNewTask(...getTaskInputs('task')));
+    newTask(...Object.values(getProject(projectTitle()).toDoList.at(-1)));
 });
 
 
-//UI: PROJECT
-const getProjectName = () => {
-    const projectName = document.querySelector('#input-project-name').value;
-    return projectName;
+//Load task
+const loadTasks = () => {
+    const taskList = getProject(projectTitle()).toDoList;
+    if(taskList.length == 0) {
+        console.log("empty");
+    } else {
+        taskList.forEach((task) => {
+            newTask(...Object.values(task));
+        })
+    }
+
 }
 
-const constructProject = () => {
+//UI: PROJECT
+const constructProject = (title = "Project X") => {
+    createProject(title);
+}
+
+const projectTitle = () => {
+    const projectTitle = document.querySelector("#project-name").innerText;
+    return projectTitle;
+}
+
+const newProject = (title = "Project X") => {
+    const projectTitle = document.querySelector("#project-name");
     const projContainer = document.querySelector('.project-list');
     const project = document.createElement('li');
-    
-    project.innerText = getProjectName();   
-    project.setAttribute('id', getProjectName().toLowerCase().replace(' ', '-'));
+    const taskList = document.querySelector(".task-list");
+
+    project.innerText = title;  
     projContainer.appendChild(project);
+
+    project.addEventListener('click', () => {
+        switchProject(projectTitle, title, taskList);
+    });
 } 
 
 const addProjectToList = document.querySelector('#create');
 addProjectToList.addEventListener('click', () => {
-    createProject(getProjectName());
-    constructProject();
-})
+    const projectName = document.querySelector('#input-project-name').value;
+    const projectTitle = document.querySelector("#project-name");
+    const taskList = document.querySelector(".task-list");
+    if (!projectName) {
+        alert("Project name must be filled out");
+        return false;
+    } else {
+        createProject(projectName);
+        newProject(projectName);
+        switchProject(projectTitle, projectName, taskList);
+    }
+});
+
+const switchProject = (projectTitle, newTitle, taskList) => {
+    const tasks = document.querySelectorAll(".task-container");
+    projectTitle.innerText = newTitle;
+    tasks.forEach(task => {
+        taskList.removeChild(task);
+    })
+    loadTasks();
+}
+
+//Default
+window.onload = function() {
+    if(projectLength() == 0) {
+        const defaultTask = ["Task Title", "Sample Description", "No Date Set", "Marginal", "In progress"];
+        constructProject();
+        newProject();
+        getProject("Project X").toDoList.push(createNewTask(...defaultTask));
+        newTask(...Object.values(getProject("Project X").toDoList.at(-1)));
+    }
+}
+
+
 
 
 

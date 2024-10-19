@@ -1,4 +1,5 @@
 const projects = [];
+// {name: "Project X", toDoList: ["Task 1", "Sample Description", "No Date Set", "Moderate", "In Progress" ]}
 
 const createProject = (name) => {
       let newProject = {};
@@ -40,7 +41,12 @@ const deleteProject = (projectName) => {
       }
 }
 
-export {createProject, getProject, editProject, deleteProject};
+const projectLength = () => {
+      return projects.length;
+}
+
+export {createProject, getProject, editProject, deleteProject, projectLength};
+
 
 // const ProjectA = createProject('Project A');
 // const ProjectB = createProject('Project B');

@@ -413,7 +413,7 @@ input[type="radio"]:focus {
 }
 
 /** Project Dialog **/
-#project-dialog {
+#project-dialog, #editProjName-dialog {
       background-color: #393E46;
       border: none;
       border-radius: 6px;

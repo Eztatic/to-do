@@ -1,5 +1,4 @@
 const projects = [];
-// {name: "Project X", toDoList: ["Task 1", "Sample Description", "No Date Set", "Moderate", "In Progress" ]}
 
 const createProject = (name) => {
       let newProject = {};
@@ -16,7 +15,7 @@ const getProjectIndex = (projectName) => {
 }
 
 const getProject = (projectName) => {
-      const index = getProjectIndex(projectName);
+      let index = getProjectIndex(projectName);
       if(index !== -1){
             return projects[index];
       }else{
@@ -25,13 +24,9 @@ const getProject = (projectName) => {
 }
 
 const editProject = (project, ...newValues) => {
-      if(project == -1) {
-            return console.error('Project not found');  
-      }  
-      const keys = Object.keys(project);
-      for(let i = 0; i < keys.length - 1; i++){
-            project[keys[i]] = newValues[i] != undefined ? newValues[i] :  project[keys[i]];
-      }
+      let thisProject = getProject(project);
+
+      thisProject['name'] = newValues[0];
 }
 
 const deleteProject = (projectName) => {
@@ -40,15 +35,11 @@ const deleteProject = (projectName) => {
 
 
 //Newly Added
-const projectLength = () => {
-      return projects.length;
+const getProjects = () => {
+      return projects;
 }
 
-const projectList = () => {
-      console.log(projects);
-}
-
-export {createProject, getProject, editProject, deleteProject, projectLength, projectList};
+export {createProject, getProject, editProject, deleteProject, getProjects};
 
 
 // const ProjectA = createProject('Project A');

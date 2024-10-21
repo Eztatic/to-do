@@ -1,6 +1,6 @@
 import { isAfter, parseISO, format } from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
-import { createProject, getProject, editProject, deleteProject, projectLength, projectList} from "./project.js"
+import { createProject, getProject, editProject, deleteProject, getProjects} from "./project.js"
 import './style.css';
 
 //FOR TEST
@@ -183,7 +183,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
         let getTaskDate = document.querySelector('#edit-dialog .current-date');
         let getTaskPriority = document.querySelectorAll('#edit-dialog input[name="importance"]');
 
-        // Replace Old Task Values
+        // Get current node values
         getTaskName.value = taskName.innerText;
         getTaskDescription.value = taskDescription.innerText;
         getTaskDate.innerText = taskDate.innerText;
@@ -281,9 +281,37 @@ const newProject = (title = "Project X") => {
     iconContainer.appendChild(deleteBtn);
     projContainer.appendChild(project);
 
+    projectName.addEventListener('click', () => {
+        switchProject(projectText, title, taskList);
+    });
+
+    editBtn.addEventListener('click', function() {
+        const editProjName = document.querySelector('#editProjName-dialog');
+
+        const projName = this.closest("li").querySelector("p");
+
+        //Temp Data
+        let oldProjName = getProject(projName.innerText);
+        let projNameText = projName;
+
+        const projNameInput = document.querySelector('#editProjName-dialog #input-project-name');
+
+        projNameInput.value = projName.innerText;
+
+        // Invoke Changes
+        const save = document.querySelector("#editProjName-dialog button#save-btn");
+        save.addEventListener("click", () => {
+            editProject(oldProjName.name, projNameInput.value);
+            projNameText.innerText = projNameInput.value;
+            console.log("run")
+        });
+
+        editProjName.showModal();
+    });
+
     deleteBtn.addEventListener("click", function() {
-        let li = this.closest("li");
-        let sibling = li.nextElementSibling || li.previousElementSibling;
+        const li = this.closest("li");
+        const sibling = li.nextElementSibling || li.previousElementSibling;
         
         if(sibling){
             switchProject(projectText, sibling.querySelector('p').innerText, taskList);
@@ -297,10 +325,6 @@ const newProject = (title = "Project X") => {
     
         deleteProject(li.querySelector('p').innerText);
         li.remove();
-    });
-
-    projectName.addEventListener('click', () => {
-        switchProject(projectText, title, taskList);
     });
 } 
 
@@ -330,7 +354,7 @@ const switchProject = (projectTitle, newTitle, taskList) => {
 
 //Default
 window.onload = function() {
-    if(projectLength() == 0) {
+    if(getProjects().length == 0) {
         const defaultTask = ["Task Title", "Sample Description", "No Date Set", "Marginal", "In progress"];
         constructProject();
         newProject();

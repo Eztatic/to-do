@@ -12,7 +12,7 @@ const createProject = (name) => {
 }
 
 const getProjectIndex = (projectName) => {
-      return projects.findIndex(project => project.name.toLowerCase() === projectName.toLowerCase());
+      return projects.findIndex(project => project.name.toLowerCase() == projectName.toLowerCase());
 }
 
 const getProject = (projectName) => {
@@ -35,17 +35,20 @@ const editProject = (project, ...newValues) => {
 }
 
 const deleteProject = (projectName) => {
-      const index = getProjectIndex(projectName);
-      if(index !== -1) {
-            projects.splice(index, 1);
-      }
+      projects.splice(getProjectIndex(projectName), 1);
 }
 
+
+//Newly Added
 const projectLength = () => {
       return projects.length;
 }
 
-export {createProject, getProject, editProject, deleteProject, projectLength};
+const projectList = () => {
+      console.log(projects);
+}
+
+export {createProject, getProject, editProject, deleteProject, projectLength, projectList};
 
 
 // const ProjectA = createProject('Project A');

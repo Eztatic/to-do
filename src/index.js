@@ -1,6 +1,6 @@
 import { isAfter, parseISO, format } from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
-import { createProject, getProject, editProject, deleteProject, projectLength} from "./project.js"
+import { createProject, getProject, editProject, deleteProject, projectLength, projectList} from "./project.js"
 import './style.css';
 
 //FOR TEST
@@ -225,9 +225,9 @@ const newTask = (name, description, formattedDate, priority, status) => {
 //Add Task to Project
 const addTaskToProject = document.querySelector("#task-dialog button#submit-btn");
 addTaskToProject.addEventListener("click", () => {
-    if(getTaskInputs('task') == false) {
-        return;
-    }
+    // if(!getTaskInputs('task')) {
+    //     return;
+    // }
     getProject(projectTitle()).toDoList.push(createNewTask(...getTaskInputs('task')));
     newTask(...Object.values(getProject(projectTitle()).toDoList.at(-1)));
 });
@@ -236,14 +236,13 @@ addTaskToProject.addEventListener("click", () => {
 //Load task
 const loadTasks = () => {
     const taskList = getProject(projectTitle()).toDoList;
-    if(taskList.length == 0) {
-        console.log("empty");
+    if(taskList.length === 0) {
+        return;
     } else {
         taskList.forEach((task) => {
-            newTask(...Object.values(task));
-        })
+                newTask(...Object.values(task));
+        });
     }
-
 }
 
 //UI: PROJECT
@@ -257,16 +256,51 @@ const projectTitle = () => {
 }
 
 const newProject = (title = "Project X") => {
-    const projectTitle = document.querySelector("#project-name");
+    const projectText = document.querySelector("#project-name");
     const projContainer = document.querySelector('.project-list');
     const project = document.createElement('li');
+    const projectName = document.createElement('p');
     const taskList = document.querySelector(".task-list");
+    const iconContainer = document.createElement("div");
+    const editBtn = document.createElement("span");
+    const deleteBtn = document.createElement("span");
 
-    project.innerText = title;  
+    projectName.innerText = title;
+    editBtn.innerText = "edit";
+    deleteBtn.innerText = "delete";
+
+    iconContainer.classList.add("icons");
+    editBtn.classList.add("edit");
+    editBtn.classList.add("material-symbols-outlined");
+    deleteBtn.classList.add("delete");
+    deleteBtn.classList.add("material-symbols-outlined");
+
+    project.appendChild(projectName);
+    project.appendChild(iconContainer);
+    iconContainer.appendChild(editBtn);
+    iconContainer.appendChild(deleteBtn);
     projContainer.appendChild(project);
 
-    project.addEventListener('click', () => {
-        switchProject(projectTitle, title, taskList);
+    deleteBtn.addEventListener("click", function() {
+        let li = this.closest("li");
+        let sibling = li.nextElementSibling || li.previousElementSibling;
+        
+        if(sibling){
+            switchProject(projectText, sibling.querySelector('p').innerText, taskList);
+        } else {
+            const tasks = document.querySelectorAll(".task-container");
+            projectText.innerText = "Create/Select a Project";
+            tasks.forEach(task => {
+                taskList.removeChild(task);
+            });
+        }
+    
+        deleteProject(li.querySelector('p').innerText);
+        li.remove();
+    });
+
+    projectName.addEventListener('click', () => {
+        switchProject(projectText, title, taskList);
     });
 } 
 

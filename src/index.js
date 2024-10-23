@@ -3,15 +3,17 @@ import { createNewTask, getTask, editTask, deleteTask } from "./task.js";
 import { createProject, getProject, editProject, deleteProject, getProjects} from "./project.js"
 import './style.css';
 
-//FOR TEST
-// const testProject = createProject("Project X");
+// DIALOGS
 
+// Setting Up Dialogs
 function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
+    // Select Dialog Elements
     const dialog = document.querySelector(dialogSelector);
     const openBtn = document.querySelector(openBtnSelector);
     const closeBtn = dialog.querySelector(closeBtnSelector);
     const form = dialog.querySelector('form'); 
 
+    // Dialog Open and Close Functions
     if (openBtn && dialog && closeBtn) {
         openBtn.addEventListener("click", () => {
             dialog.showModal();
@@ -28,10 +30,14 @@ function setupDialog(openBtnSelector, dialogSelector, closeBtnSelector) {
         });
     }
 }
+
+// Make Dialogs for Creating Projects and Tasks
 setupDialog('#create-project-btn', '#project-dialog', 'button#cancel-btn');
 setupDialog('#add-task-btn', '#task-dialog', 'button#cancel-btn');
 
+// Get Inputs from Dialog
 const getTaskInputs = (dialog) => {
+    // Get Input Values from Dialogs
     let taskName = document.querySelector(`#${dialog}-dialog #input-task-name`).value;
     let taskDescription = document.querySelector(`#${dialog}-dialog #input-description`).value;
     let date = document.querySelector(`#${dialog}-dialog input#input-deadline`).value;
@@ -39,11 +45,13 @@ const getTaskInputs = (dialog) => {
     let formattedDate = undefined;
     let status = undefined;
 
+    // Decline Empty Values
     if (!taskName || !taskDescription) {
         alert("Task Name and Description must be filled out");
         return false;
     }
 
+    // Change Date Format
     if(date){
         formattedDate = format(date, 'MM-dd-yyyy HH:mm a');
         const parsedDate = parseISO(date);
@@ -62,22 +70,11 @@ const getTaskInputs = (dialog) => {
     return [taskName, taskDescription, formattedDate, taskPriority, status];
 }
 
-const priorityColor = (taskPriority, taskName) => {
-    const taskHead = taskName.parentElement;
-    if(taskPriority.innerText == "Marginal") {
-        taskPriority.style.color = "#1cd131";
-        taskHead.style.backgroundColor = "#1cd131";
-    } else if (taskPriority.innerText == "Moderate") {
-        taskPriority.style.color = "#FFC000";
-        taskHead.style.backgroundColor = "#FFC000";
-    } else if (taskPriority.innerText == "Critical") {
-        taskPriority.style.color = "#ff3030";
-        taskHead.style.backgroundColor = "#ff3030";
-    }        
-}
+// UI: TASK
 
-//Construct New Task
+// Construct New Task
 const newTask = (name, description, formattedDate, priority, status) => {
+    // Create Elements and Select Parent Elements
     const taskList = document.querySelector(".task-list");
     const taskContainer = document.createElement("div");
     const taskHead = document.createElement("div");
@@ -95,6 +92,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
     const deleteBtn = document.createElement("span");
     const dropBtn = document.createElement('button');
 
+    // Add Class to Task Elements
     taskContainer.classList.add("task-container");
     taskHead.classList.add("task-head");
     taskName.classList.add("task-name");
@@ -110,6 +108,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
     deleteBtn.classList.add("delete");
     deleteBtn.classList.add("material-symbols-outlined");
     
+    // Add Text Content in Task Elements
     taskName.innerText = name;
     dateLabel.innerText = "Due:  ";
     date.innerText = formattedDate;
@@ -122,6 +121,7 @@ const newTask = (name, description, formattedDate, priority, status) => {
     deleteBtn.innerText = "delete";
     dropBtn.textContent = "▼";
 
+    // Add Task Component to Task Container
     taskHead.appendChild(taskName);
     taskHead.appendChild(dateLabel);
     dateLabel.appendChild(date);
@@ -139,9 +139,8 @@ const newTask = (name, description, formattedDate, priority, status) => {
 
     priorityColor(taskPriority, taskName);
 
+    // Expand Task Details
     dropBtn.addEventListener('click', () => {
-        if (!taskBody) return;
-    
         if (taskBody.style.display === "none" || !taskBody.style.display) {
             taskBody.style.display = "grid";
             dropBtn.textContent = "▲"; 
@@ -151,59 +150,64 @@ const newTask = (name, description, formattedDate, priority, status) => {
         }
     });
 
+    // Change Task Status(In progress/ Completed)
     taskName.addEventListener("click", function() {
         let taskName = this.closest(".task-container").querySelector(".task-name").innerText;
         let taskDescription = this.closest(".task-container").querySelector(".description").innerText;
         let status = this.parentElement.parentElement.querySelector(".status");
+
         this.classList.toggle("checked");
         if(this.classList.contains("checked")) {
             status.innerText = "Completed";
         } else {
             status.innerText = "In Progress";   
         }
+
         editTask(getProject(projectTitle()), taskName, taskDescription, status.innerText);
     });
 
+    // Edit This Task
     editBtn.addEventListener("click", function() {
+        // Edit Task Dialog
         const editDialog = document.querySelector('#edit-dialog');
+        const save = document.querySelector("#edit-dialog button#save-btn");
 
-        // Selected Task Nodes
+        // Select Task Nodes to be Changed
         const taskName = this.closest(".task-container").querySelector(".task-name");
         const taskDescription = this.closest(".task-container").querySelector(".description");
         const taskDate = this.closest(".task-container").querySelector(".due-date");
         const priority = this.closest(".task-container").querySelector(".priority");
 
         // Store Task Nodes and Data Temporarily
-        let oldTempData = getTask(getProject(projectTitle()), taskName.innerText, taskDescription.innerText);
-        let taskComp = [taskName, taskDescription, taskDate, priority];
+        let oldData = getTask(getProject(projectTitle()), taskName.innerText, taskDescription.innerText);
+        let taskComponents = [taskName, taskDescription, taskDate, priority];
 
         // Get Edit Task Input Nodes
-        let getTaskName = document.querySelector('#edit-dialog #input-task-name')
-        let getTaskDescription = document.querySelector('#edit-dialog #input-description');
-        let getTaskDate = document.querySelector('#edit-dialog .current-date');
-        let getTaskPriority = document.querySelectorAll('#edit-dialog input[name="importance"]');
+        let newTaskName = document.querySelector('#edit-dialog #input-task-name')
+        let newTaskDescription = document.querySelector('#edit-dialog #input-description');
+        let newTaskDate = document.querySelector('#edit-dialog .current-date');
+        let newTaskPriority = document.querySelectorAll('#edit-dialog input[name="importance"]');
 
-        // Get current node values
-        getTaskName.value = taskName.innerText;
-        getTaskDescription.value = taskDescription.innerText;
-        getTaskDate.innerText = taskDate.innerText;
-        for (let currentTaskPriority of getTaskPriority) {
+        // Get Current Node Values
+        newTaskName.value = taskName.innerText;
+        newTaskDescription.value = taskDescription.innerText;
+        newTaskDate.innerText = taskDate.innerText;
+        for (let currentTaskPriority of newTaskPriority) {
             if(priority.innerText == currentTaskPriority.value) {
                 currentTaskPriority.setAttribute("checked", "checked");
                 break;
             }
         }
 
-        // Invoke Changes
-        const save = document.querySelector("#edit-dialog button#save-btn");
+        // When Saved, Edit Node and Task in Project To Do List
         save.addEventListener("click", () => {
             if(getTaskInputs('edit') == false) {
                 return;
             }
 
-            editTask(getProject(projectTitle()), oldTempData['title'], oldTempData['description'], ...getTaskInputs('edit'));
+            editTask(getProject(projectTitle()), oldData['title'], oldData['description'], ...getTaskInputs('edit'));
             for(let i = 0; i <= 3; i++) {
-                taskComp[i].innerText = getTaskInputs('edit')[i];
+                taskComponents[i].innerText = getTaskInputs('edit')[i];
             }
 
             priorityColor(priority, taskName);
@@ -212,9 +216,13 @@ const newTask = (name, description, formattedDate, priority, status) => {
         editDialog.showModal();
     });
 
+    // Delete This Task
     deleteBtn.addEventListener("click", function() {
+        // Get this Task's Task Name and Description
         let taskName = this.closest(".task-container").querySelector(".task-name").innerText;
         let taskDescription = this.closest(".task-container").querySelector(".description").innerText;
+
+        // Delete Node and Remove in Project To Do List
         this.closest(".task-container").remove();
         deleteTask(getProject(projectTitle()), taskName, taskDescription);
     });
@@ -222,7 +230,22 @@ const newTask = (name, description, formattedDate, priority, status) => {
     taskList.prepend(taskContainer);
 }
 
-//Add Task to Project
+// Change Task Color Theme Based on Priority
+const priorityColor = (taskPriority, taskName) => {
+    const taskHead = taskName.parentElement;
+    if(taskPriority.innerText == "Marginal") {
+        taskPriority.style.color = "#1cd131";
+        taskHead.style.backgroundColor = "#1cd131";
+    } else if (taskPriority.innerText == "Moderate") {
+        taskPriority.style.color = "#FFC000";
+        taskHead.style.backgroundColor = "#FFC000";
+    } else if (taskPriority.innerText == "Critical") {
+        taskPriority.style.color = "#ff3030";
+        taskHead.style.backgroundColor = "#ff3030";
+    }        
+}
+
+// Add Task to Project
 const addTaskToProject = document.querySelector("#task-dialog button#submit-btn");
 addTaskToProject.addEventListener("click", () => {
     // if(!getTaskInputs('task')) {
@@ -232,8 +255,7 @@ addTaskToProject.addEventListener("click", () => {
     newTask(...Object.values(getProject(projectTitle()).toDoList.at(-1)));
 });
 
-
-//Load task
+// Load Task from Selected Project
 const loadTasks = () => {
     const taskList = getProject(projectTitle()).toDoList;
     if(taskList.length === 0) {
@@ -245,17 +267,11 @@ const loadTasks = () => {
     }
 }
 
-//UI: PROJECT
-const constructProject = (title = "Project X") => {
-    createProject(title);
-}
+// UI: PROJECT
 
-const projectTitle = () => {
-    const projectTitle = document.querySelector("#project-name").innerText;
-    return projectTitle;
-}
-
+// Construct New Project
 const newProject = (title = "Project X") => {
+    // Create Elements and Select Parent Elements
     const projectText = document.querySelector("#project-name");
     const projContainer = document.querySelector('.project-list');
     const project = document.createElement('li');
@@ -265,54 +281,59 @@ const newProject = (title = "Project X") => {
     const editBtn = document.createElement("span");
     const deleteBtn = document.createElement("span");
 
+    // Created Elements Text Values
     projectName.innerText = title;
     editBtn.innerText = "edit";
     deleteBtn.innerText = "delete";
 
+    // Class to Project Elements
     iconContainer.classList.add("icons");
     editBtn.classList.add("edit");
     editBtn.classList.add("material-symbols-outlined");
     deleteBtn.classList.add("delete");
     deleteBtn.classList.add("material-symbols-outlined");
 
+    // Add Elements to their Perspective Containers
     project.appendChild(projectName);
     project.appendChild(iconContainer);
     iconContainer.appendChild(editBtn);
     iconContainer.appendChild(deleteBtn);
     projContainer.appendChild(project);
 
+    // Load this Project's Task
     projectName.addEventListener('click', () => {
         switchProject(projectText, title, taskList);
     });
 
+    // Edit This Project
     editBtn.addEventListener('click', function() {
         const editProjName = document.querySelector('#editProjName-dialog');
-
         const projName = this.closest("li").querySelector("p");
 
-        //Temp Data
+        // Old Node Values and Data
         let oldProjName = getProject(projName.innerText);
         let projNameText = projName;
 
+        // Edit Project Name
         const projNameInput = document.querySelector('#editProjName-dialog #input-project-name');
-
         projNameInput.value = projName.innerText;
 
-        // Invoke Changes
+        // When Saved, Invoke Changes
         const save = document.querySelector("#editProjName-dialog button#save-btn");
         save.addEventListener("click", () => {
             editProject(oldProjName.name, projNameInput.value);
             projNameText.innerText = projNameInput.value;
-            console.log("run")
         });
 
         editProjName.showModal();
     });
 
+    // Delete This Project
     deleteBtn.addEventListener("click", function() {
         const li = this.closest("li");
         const sibling = li.nextElementSibling || li.previousElementSibling;
         
+        // After Delete, Load Previous or Next Project
         if(sibling){
             switchProject(projectText, sibling.querySelector('p').innerText, taskList);
         } else {
@@ -326,8 +347,17 @@ const newProject = (title = "Project X") => {
         deleteProject(li.querySelector('p').innerText);
         li.remove();
     });
+
+    createProject(title);
 } 
 
+// Get Current Selected Project Title
+const projectTitle = () => {
+    const projectTitle = document.querySelector("#project-name").innerText;
+    return projectTitle;
+}
+
+// Add New Project to Project List
 const addProjectToList = document.querySelector('#create');
 addProjectToList.addEventListener('click', () => {
     const projectName = document.querySelector('#input-project-name').value;
@@ -337,12 +367,12 @@ addProjectToList.addEventListener('click', () => {
         alert("Project name must be filled out");
         return false;
     } else {
-        createProject(projectName);
         newProject(projectName);
         switchProject(projectTitle, projectName, taskList);
     }
 });
 
+// Load Tasks from Selected Project
 const switchProject = (projectTitle, newTitle, taskList) => {
     const tasks = document.querySelectorAll(".task-container");
     projectTitle.innerText = newTitle;
@@ -352,11 +382,10 @@ const switchProject = (projectTitle, newTitle, taskList) => {
     loadTasks();
 }
 
-//Default
+// Default
 window.onload = function() {
     if(getProjects().length == 0) {
         const defaultTask = ["Task Title", "Sample Description", "No Date Set", "Marginal", "In progress"];
-        constructProject();
         newProject();
         getProject("Project X").toDoList.push(createNewTask(...defaultTask));
         newTask(...Object.values(getProject("Project X").toDoList.at(-1)));

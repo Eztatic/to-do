@@ -33,23 +33,8 @@ const deleteProject = (projectName) => {
       projects.splice(getProjectIndex(projectName), 1);
 }
 
-
-//Newly Added
 const getProjects = () => {
       return projects;
 }
 
 export {createProject, getProject, editProject, deleteProject, getProjects};
-
-
-// const ProjectA = createProject('Project A');
-// const ProjectB = createProject('Project B');
-//console.log(projects);
-//console.log(getProject('Project A'));
-// editProject(getProject('Project A'), undefined);
-// deleteProject('Project B');
-// console.log(projects);
-
-// const addTaskToProject = (project, task) => {
-//       project.toDoList.push(task);
-// }

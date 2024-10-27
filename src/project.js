@@ -1,4 +1,8 @@
-const projects = [];
+const projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+const updateDB = () => {
+      localStorage.setItem('projects', JSON.stringify(projects));
+}
 
 const createProject = (name) => {
       let newProject = {};
@@ -11,7 +15,7 @@ const createProject = (name) => {
 }
 
 const getProjectIndex = (projectName) => {
-      return projects.findIndex(project => project.name.toLowerCase() == projectName.toLowerCase());
+      return projects.findIndex(project => project.name == projectName);
 }
 
 const getProject = (projectName) => {
@@ -37,4 +41,4 @@ const getProjects = () => {
       return projects;
 }
 
-export {createProject, getProject, editProject, deleteProject, getProjects};
+export {createProject, getProject, editProject, deleteProject, getProjects, updateDB};

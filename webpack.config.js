@@ -26,7 +26,9 @@ const config = {
     devtool: 'inline-source-map',
     devServer: {
         open: true,
-        static: './src',
+        static: {
+            directory: path.join(__dirname, 'dist'),
+        },
         hot: true,
     },
     plugins: [

@@ -1,7 +1,7 @@
 {
-  "name": "my-webpack-project",
+  "name": "to-do-app",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "A to-do application used for making a list of task for a certain project",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@webpack-cli/generators": "^3.0.7",
+    "copy-webpack-plugin": "^12.0.2",
     "date-fns": "^4.1.0",
     "generators": "^0.1.0"
   }

@@ -1,7 +1,7 @@
 import { isAfter, parseISO, format } from 'date-fns';
 import { createNewTask, getTask, editTask, deleteTask } from './task.js';
-import { createProject, getProject, editProject, deleteProject, getProjects, updateDB} from '../project.js';
-import './style.css';
+import { createProject, getProject, editProject, deleteProject, getProjects, updateDB} from './project.js';
+// import '../style.css';
 
 // DIALOGS
 

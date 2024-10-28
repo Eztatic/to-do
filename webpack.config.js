@@ -1,16 +1,25 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
-const stylesHandler = MiniCssExtractPlugin.loader;
+const entries = ['index', 'project', 'task'];
+
+const entry = entries.reduce((acc, name) => {
+  acc[name] = {
+    import: `./src/js/${name}.js`,
+    dependOn: 'shared',
+  }
+  return acc;
+}, {});
+entry.shared = './src/style.css';
 
 
 const config = {
-    entry: './src/index.js',
+    entry: entry,
     output: {
-        filename: 'index.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
         clean: true
     },
@@ -18,14 +27,18 @@ const config = {
     devServer: {
         open: true,
         static: './src',
+        hot: true,
     },
     plugins: [
         new HtmlWebpackPlugin({
-            inject: false,
             template: './src/index.html'
         }),
 
-        new MiniCssExtractPlugin(),
+        new CopyWebpackPlugin({
+            patterns: [
+              {from: 'src/icons', to: 'icons'},
+            ],
+        }),
     ],
     module: {
         rules: [
@@ -47,6 +60,9 @@ const config = {
             }
         ],
     },
+    optimization: {
+        runtimeChunk: 'single',
+    }
 };
 
 module.exports = () => {

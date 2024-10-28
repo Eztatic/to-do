@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <title>To Do App</title>
+    <script src="./js/index.js" defer async></script>
+<script defer src="index.bundle.js"></script><script defer src="project.bundle.js"></script><script defer src="task.bundle.js"></script><script defer src="runtime.bundle.js"></script><script defer src="shared.bundle.js"></script></head>
+<body>
+    <dialog id="project-dialog">
+        <form action="" id="project-input" method="dialog">
+            <label for="input-project-name">Project Name:</label> 
+            <input type="text" id="input-project-name" required><br>
+            <div>
+                <button id="create-btn">Create</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="editProjName-dialog">
+        <form action="" id="project-input" method="dialog">
+            <label for="input-project-name">Project Name:</label> 
+            <input type="text" id="input-project-name" required><br>
+            <div>
+                <button id="save-btn">Save</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="task-dialog">
+        <form action="" id="task-input" method="dialog">
+            <label for="input-task-name">Task Name:</label> 
+            <input type="text" id="input-task-name" required>
+            <label for="input-description">Description:</label>
+            <textarea id="input-description" required></textarea>
+            <label for="input-deadline">Due:</label>
+            <input type="datetime-local" id="input-deadline">
+            <fieldset>
+                <legend>Priority</legend>
+                <input type="radio" id="marginal" name="importance" value="Marginal" checked="checked">
+                <label for="marginal">Marginal</label>
+                <input type="radio" id="moderate" name="importance" value="Moderate">
+                <label for="moderate">Moderate</label>
+                <input type="radio" id="critical" name="importance" value="Critical">
+                <label for="critical">Critical</label>
+            </fieldset><br>
+            <div>
+                <button id="submit-btn">Submit</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <dialog id="edit-dialog">
+        <form action="" id="task-input" method="dialog">
+            <label for="input-task-name">Task Name:</label> 
+            <input type="text" id="input-task-name" required>
+            <label for="input-description">Description:</label>
+            <textarea id="input-description" required></textarea>
+            <label for="input-deadline">Due:</label>
+            <div class="date-container">
+                <span>Task Date: <span class="current-date"></span></span>
+                <input type="datetime-local" id="input-deadline">
+            </div>
+            <fieldset>
+                <legend>Priority</legend>
+                <input type="radio" id="marginal" name="importance" value="Marginal" >
+                <label for="marginal">Marginal</label>
+                <input type="radio" id="moderate" name="importance" value="Moderate">
+                <label for="moderate">Moderate</label>
+                <input type="radio" id="critical" name="importance" value="Critical">
+                <label for="critical">Critical</label>
+            </fieldset><br>
+            <div>
+                <button id="save-btn">Save</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+    <aside>
+        <div class="user-profile">
+            <img src="./icons/profile-user.png" alt="user-profile">
+            <p>Username</p>
+        </div> 
+        <div class="projects-container">
+            <p class="project-label">Projects</p>
+            <ul class="project-list">
+                <!-- <li>
+                    <p>Project Name</p>
+                    <span class="material-symbols-outlined edit"> edit </span>
+                    <span class="material-symbols-outlined delete"> delete </span>
+                </li> -->
+            </ul>
+            <button id="create-project-btn">+</button>
+        </div>
+    </aside>
+    <main>
+        <h1 id="project-name">Project</h1>
+        <h2>List of Task</h2>
+        <div class="task-list">
+            <!-- <div class="task-container">
+                <div class="task-head">
+                    <p class="task-name">TASK NAME</p>
+                    <p>Due:  <span class="due-date">YYYY/MM/DD</span></p>
+                </div>
+                <div class="task-body">
+                    <p>Description</p>
+                    <p class="priority">Important</p>
+                    <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt aliquid quasi laborum quod debitis eius quis quisquam pariatur ut, asperiores aperiam error perspiciatis commodi minima sunt deleniti alias provident molestias mollitia! Hic, nulla facere officiis earum suscipit eos ipsam voluptatibus voluptate pariatur ea dicta est sequi voluptatem excepturi rerum id.</p>
+                    <div class="icons">
+                        <span class="material-symbols-outlined edit"> edit </span>
+                        <span class="material-symbols-outlined delete"> delete </span>
+                    </div>
+                    <p>Status:  <span class="status">In progress</span></p>
+                </div>
+                <button class="dropdown-btn">
+                    <span>▼</span>
+                </button>
+            </div> -->
+            <button id="add-task-btn">+</button>
+        </div>
+    </main>
+</body>
+</html>
